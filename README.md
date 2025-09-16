@@ -1,2 +1,3 @@
-# terramate-catalyst
-Repository terramate-catalyst
+# Terramate Catalyst
+
+Read about [Terramate Catalyst](CATALYST.md)
