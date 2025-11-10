@@ -1,2 +1,2 @@
-# terramate-pro
-Repository terramate-pro
+# terramate-catalyst
+Repository terramate-catalyst
