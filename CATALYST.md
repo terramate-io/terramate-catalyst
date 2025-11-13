@@ -58,15 +58,21 @@ Once all resources in a stack are destroyed, leaving the stack empty, `terramate
 
 To know what resources are available in a stack a contineous Terramate Cloud synchronization (e.g. a daily drift check) needs to be configured to track the state of stacks.
 
-## Command: `terramate bundles list`
+## Command: `terramate bundle list`
 
 > [!NOTE]
 > This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
 
-## Command: `terramate components list`
+## Command: `terramate component list`
 
 > [!NOTE]
 > This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
+
+## Command: `terramate component create`
+
+Convert a Terraform/Opentofu module to a Terramate Component
+
+`terramate component create` can be used inside of a terraform module directory to create a simple templated component that converts all TF module variables to component inputs and defines an intial metdata configuration for the component.
 
 # Bundles
 
@@ -237,7 +243,7 @@ It also provides information about data required at scaffolding or reconfigurati
 - Bundle Alias - An alias to reference the instance of a bundle.
 - Bundle Inputs - a set of input variables that are available to be set during Bundle Instantiation.
 - Bundle Stacks - zero or more stacks that the bundle should create (if they do not already exist) or maintain.
-- Bundle Stack Component Instantiations - Terramate Components to be instantiatied within Bundle Stacks that define how to generate actual code.
+- Bundle Stack Component Instances - Terramate Components to be instantiatied within Bundle Stacks that define how to generate actual code.
 - Bundle Scaffolding configuration - Defines where a bundle instantiation shall be created within the hierarchy of the repository.
 
 A Bundle Definition does not define any code or code generation directly but only through Terramate Components.
@@ -543,12 +549,6 @@ This example builds a tree of teams, formats the hierachy and maps it to values 
 
 > [!NOTE]
 > This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
-
-# Upcoming features available as preview
-
-## Convert a Terraform/Opentofu module to a Terramate Component
-
-`terramate component create` can be used inside of a terraform module directory to create a simple templated component that converts all TF module variables to component inputs and defines an intial metdata configuration for the component.
 
 
 [terramate.io]: https://terramate.io
