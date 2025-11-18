@@ -5,7 +5,7 @@
 > Terramate CLI Catalyst is free to use for small projects. See details on [terramate.io].
 
 > [!TIP]
-> Terramate Catalyst is currently only available for design partners. If you are interested in joining our design partner programm, please [contact us].
+> Terramate Catalyst is currently only available for design partners. If you are interested in joining our design partner program, please [contact us].
 
 Terramate Catalyst helps developers to forget about infrastructure by leveraging Infrastructure as Code Blueprints designed by platform engineers and configuring them in a one-click experience.
 
@@ -123,7 +123,6 @@ What variables will be asked for is defined within the bundle. For all inputs th
 > [!NOTE]
 > This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
 
-
 ### Instantiation via Developer Portals
 
 > [!NOTE]
@@ -156,10 +155,10 @@ bundle "{name}" {
 - The `{bundle-source}` must be either:
   - a local directory that is relative to the file containing the bundle instantiation
   - a local directory that is absolute to the repositories root local directory
-	- a remote source reference
+  - a remote source reference
 - The `{bundle-version}` can be:
   - a pinned version (not yet supported)
-	- a version contraint (not yet supported)
+  - a version contraint (not yet supported)
 
 #### Supported attributes and blocks
 
@@ -170,11 +169,11 @@ bundle "{name}" {
   - `bundle.{name}.version` (Attribute) (Optional) The version of the bundle definition
 
   - `bundle.{name}.inputs` (Attribute) A map of inputs.
-	  This map can contain any keys. Only keys matching available inputs are considered. Keys not matching available inputs are ignored.
+    This map can contain any keys. Only keys matching available inputs are considered. Keys not matching available inputs are ignored.
 
   - `bundle.{name}.inputs` (Block) A block of inputs.
-		Each key must be a valid and existing input in the bundle definition.
-		An input defined in this block takes precedence over an input by the same name defined in the inputs map via the `bundle.{name}.inputs` attribute.
+    Each key must be a valid and existing input in the bundle definition.
+    An input defined in this block takes precedence over an input by the same name defined in the inputs map via the `bundle.{name}.inputs` attribute.
 
 ### Bundle Instantiation YAML Configuration Syntax
 
@@ -204,12 +203,12 @@ To transform HCL to YAML the following details are important:
 - `apiVersion` (Required) needs to be `terramate.io/cli/v1`
 - `kind` (Required) needs to be BundleInstance
 - `metadata` (Required) A map of metadata required to configure this bundles instantance
-	- `metadata.name` (Required) a unique name of the bundle. It needs to be unique within the directory the bundle is instantiated in.
-	- `metadata.uuid` (Optional) an UUID to identify the bundle instantiation. (not yet available)
+  - `metadata.name` (Required) a unique name of the bundle. It needs to be unique within the directory the bundle is instantiated in.
+  - `metadata.uuid` (Optional) an UUID to identify the bundle instantiation. (not yet available)
 - `spec` (Required)
   - `spec.source` (Required) The location of the bundle definition
-	- `spec.version` (Required) The version of the bundle definition
-	- `spec.inputs` (Required) A map of inputs. Each key must be a valid and existing input in the bundle definition.
+  - `spec.version` (Required) The version of the bundle definition
+  - `spec.inputs` (Required) A map of inputs. Each key must be a valid and existing input in the bundle definition.
 
 ## Bundle Reconfiguration
 
@@ -306,7 +305,6 @@ define bundle {
 
 The default for `alias` is directory where the bundle is instantiated and the `name` used in scaffolding or defined within the bundle instance metadata: `{bundle-isntance-dirname}:{name}`.
 
-
 #### Bundle Input HCL Block
 
 Example of bundle inputs:
@@ -352,7 +350,6 @@ When using `terramate scaffold` command, this configuration defined where the bu
 - If a stack already exists, the stack metadata is not updated. Note: In future versions, the metdata will be inherited to the stack without hardcoding it on instantiation.
 - If a bundle instantiation is removed from code, the Bundle Stacks will NOT be removed too - only generated HCL code or generated files will be removed from the stack.
 
-
 The following code shows a Catalyst Bundle Stack instantiating one Catalyst Component, forwarding all bundle inputs as component inputs. In addition stack metadata defines `name`, `description`, and `tags` for the new stack that will be create relativ to the bundle in the location defined by `path`
 
 ```hcl
@@ -375,7 +372,6 @@ define bundle stack "organization-members" {
 }
 ```
 
-
 ##### Stack metadata
 
 The following metadata is supported in Bundle Stacks: `name`, `description`, `tags`, `after`, `before`, `wants`, `wanted_by`.
@@ -385,9 +381,7 @@ To define the metadata, `bundle.input` and Terramate Functions are available to 
 
 It is recommended to prefix tags with the maintainer domain name e.g. `example.com/my-tag` instead of `my-tag` to not conflict with user defined tags.
 
-Additionally `path` defines where the stack will be created
-	- when relativ: relativ to the file containing the bundle instantiation
-	- when absolute: absolute to the repository root
+Additionally `path` defines where the stack will be created - when relativ: relativ to the file containing the bundle instantiation - when absolute: absolute to the repository root
 
 ##### Components in Stacks
 
@@ -398,7 +392,6 @@ Any [Component Instantiation](#component-instantiation-hcl-configuration-syntax)
 A Bundle can define exports. Those are meant to pass pre computed configuration to other bundles or code generation.
 
 They can be used to generate allowed_values for scaffolding purposes or to share pre calculated structures to share information about resources the bundle created.
-
 
 The follwoing example defines a `team_tuple` that exports a tuple of two input variables: `parent` and `name`.
 
@@ -549,7 +542,6 @@ This example builds a tree of teams, formats the hierachy and maps it to values 
 
 > [!NOTE]
 > This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
-
 
 [terramate.io]: https://terramate.io
 [contact us]: https://terramate.io/demo

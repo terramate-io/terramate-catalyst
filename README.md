@@ -3,7 +3,7 @@
 Access our early [Documentation of Terramate Catalyst](CATALYST.md).
 
 > [!TIP]
-> Terramate Catalyst is currently only available for design partners. If you are interested in joining our design partner programm, please [contact us].
+> Terramate Catalyst is currently only available for design partners. If you are interested in joining our design partner program, please [contact us].
 
 ## What is Terramate Catalyst?
 
@@ -43,6 +43,7 @@ Catalyst can be used to genearte any combination, any complexity, and any scale 
 When promoting the service through environments e.g. from dev to staging to production, the application developer should only choose where to go next and what differences in scale are required.
 
 Catalyst takes the responsibility to:
+
 - provide standardized interfaces to application developers
 - hide the complexity from non-experts
 - allow to define those interfaces to the needs of applications developers by platform teams
@@ -55,6 +56,7 @@ Catalyst takes the responsibility to:
 Catalyst enables non-cloud-experts by empowering cloud-experts to hide all the rrequired details and complexity from the end-users.
 
 The benefits are
+
 - standadized interfaces prevent misconfigurations
 - simpler configurations lead to faster go to market for new services/workloads/applications.
 - hidden details allow for transparent refactors and contineous improvements of the platform behind the scenes.
