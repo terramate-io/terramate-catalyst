@@ -86,12 +86,69 @@ This allows to present a focused view of available bundles and recommended versi
 
 ### Local Collections
 
-All local bundles are automatically picked up and will be available for `terramate scaffold` selection.
+All local bundles in the `/bundles` directory of the current project are automatically picked up and will be available for `terramate scaffold` selection.
 
 ### Remote Collections
 
-> [!NOTE]
-> This feature is not yet available in public preview. Please [schedule a demo] if you are intersted in more details or want to join our design partner program.
+`terramate scaffold` also supports selection from remote bundle catalogs. A catalog consists of a file `terramate_packages.json` that lists the contained bundles and components. Example:
+```json
+[
+	{
+		"name": "My Catalog",
+		"description": "Contains examples",
+		"bundles": [
+			{
+				"path": "/bundles/my-bundle",
+				"name": "Example bundle",
+				"class": "my-org/my-bundle",
+				"version": "1.0.0"
+			}
+		],
+		"components": [
+			{
+				"path": "/components/my-component",
+				"name": "Example component",
+				"class": "my-org/my-component",
+				"version": "1.0.0"
+			}
+		]
+	}
+]
+```
+
+To use this catalog directly from a Github repository, it must be placed at the root of the repository.
+
+The repository can then be added to the `scaffold.package_sources` section of the `terramate.tm.hcl` file in your project root:
+```hcl
+scaffold {
+  package_sources = [
+    "github.com/my-org/my-repo?ref=v1.0.0"
+  ]
+}
+```
+
+#### Packaged collections
+
+The above example showed using a bundle catalog directly from a Git repository, but it is also possible to package bundles and components into an archive file:
+```hcl
+scaffold {
+  package_sources = [
+    "github.com/my-org/my-repo?ref=main",
+    "https://my-org.com/releases/v1.zip"
+  ]
+}
+```
+
+The contents of the archive must have the following structure:
+```
+.
+├── bundles/
+│   # ... contains packaged bundle files, same directory structure as local
+├── components/
+│   # ... contains packaged component files, same directory structure as local
+└── terramate_packages.json
+```
+
 
 ## Bundle Instantiation
 
@@ -156,6 +213,8 @@ bundle "{name}" {
   - a local directory that is relative to the file containing the bundle instantiation
   - a local directory that is absolute to the repositories root local directory
   - a remote source reference
+	- example for Github repository: `github.com/my-org/my-repo//bundles/my-bundle?ref=v1.0.0`
+	- example for archive file: `https://my-org.com/releases/v1.zip//bundles/my-bundle?ref=v1.0.0`
 - The `{bundle-version}` can be:
   - a pinned version (not yet supported)
   - a version contraint (not yet supported)
