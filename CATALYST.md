@@ -93,26 +93,26 @@ All local bundles in the `/bundles` directory of the current project are automat
 `terramate scaffold` also supports selection from remote bundle catalogs. A catalog consists of a file `terramate_packages.json` that lists the contained bundles and components. Example:
 ```json
 [
-	{
-		"name": "My Catalog",
-		"description": "Contains examples",
-		"bundles": [
-			{
-				"path": "/bundles/my-bundle",
-				"name": "Example bundle",
-				"class": "my-org/my-bundle",
-				"version": "1.0.0"
-			}
-		],
-		"components": [
-			{
-				"path": "/components/my-component",
-				"name": "Example component",
-				"class": "my-org/my-component",
-				"version": "1.0.0"
-			}
-		]
-	}
+  {
+    "name": "My Catalog",
+    "description": "Contains examples",
+    "bundles": [
+      {
+        "path": "/bundles/my-bundle",
+        "name": "Example bundle",
+        "class": "my-org/my-bundle",
+        "version": "1.0.0"
+      }
+    ],
+    "components": [
+      {
+        "path": "/components/my-component",
+        "name": "Example component",
+        "class": "my-org/my-component",
+        "version": "1.0.0"
+      }
+    ]
+  }
 ]
 ```
 
@@ -195,12 +195,12 @@ What variables will be asked for is defined within the bundle. For all inputs th
 ```hcl
 # file: bundle.tm.hcl or bundle.tm
 bundle "{name}" {
-	source  = "{bundle-source}"
-	version = "{bundle-version}" # not yet supported
+  source  = "{bundle-source}"
+  version = "{bundle-version}" # not yet supported
 
-	inputs {
-		attribute = value
-	}
+  inputs {
+    attribute = value
+  }
 }
 ```
 
@@ -213,8 +213,8 @@ bundle "{name}" {
   - a local directory that is relative to the file containing the bundle instantiation
   - a local directory that is absolute to the repositories root local directory
   - a remote source reference
-	- example for Github repository: `github.com/my-org/my-repo//bundles/my-bundle?ref=v1.0.0`
-	- example for archive file: `https://my-org.com/releases/v1.zip//bundles/my-bundle?ref=v1.0.0`
+  - example for Github repository: `github.com/my-org/my-repo//bundles/my-bundle?ref=v1.0.0`
+  - example for archive file: `https://my-org.com/releases/v1.zip//bundles/my-bundle?ref=v1.0.0`
 - The `{bundle-version}` can be:
   - a pinned version (not yet supported)
   - a version contraint (not yet supported)
@@ -241,11 +241,11 @@ bundle "{name}" {
 apiVersion: terramate.io/cli/v1
 kind: BundleInstance
 metadata:
-	name: {name}
+  name: {name}
 spec:
-	source: {bundle-source}
-	inputs:
-	  attribute: value
+  source: {bundle-source}
+  inputs:
+    attribute: value
 ```
 
 This YAML variant is the equivalent to the HCL variant above.
@@ -320,12 +320,12 @@ All definitions for a bundle will be merged, so it ins not required to define ev
 
 ```hcl
 define bundle {
-	metadata {
-		# ...
-	}
+  metadata {
+    # ...
+  }
 
-	input "name" {
-	}
+  input "name" {
+  }
 }
 ```
 
@@ -335,12 +335,12 @@ Example of bundle metdadata:
 
 ```hcl
 define bundle metadata {
-	class   = "example.com/my-bundle"
-	version = "1.0.0"
-	name    = "My Bundle"
-	description = <<-EOF
-		My first Terramate Bundle is doing great things
-	EOF
+  class   = "example.com/my-bundle"
+  version = "1.0.0"
+  name    = "My Bundle"
+  description = <<-EOF
+    My first Terramate Bundle is doing great things
+  EOF
 
 }
 ```
@@ -370,24 +370,53 @@ Example of bundle inputs:
 
 ```hcl
 define bundle {
-	input "name" {
-		type        = string
-		prompt      = "Name of the Service"
-		description = "Set a name for the serivce"
-	}
+  input "name" {
+    type        = string
+    description = "Set a name for the serivce"
 
-	input "visibility" {
-		type        = string
-		prompt      = "Visibility"
-		description = "Visibility of the Resource"
-		allowed_values = [
-			{ name = "A public resource", value = "public" },
-			{ name = "A private resource", value =  "private" },
-		]
-		default = "private"
-	}
+    prompt = "Name of the Service"
+  }
+
+  input "visibility" {
+    type        = string
+    description = "Visibility of the Resource"
+    default     = "private"
+
+    prompt = "Visibility"
+    allowed_values = [
+      { name = "A public resource", value = "public" },
+      { name = "A private resource", value =  "private" },
+    ]
+  }
 }
 ```
+
+- `type` The type of the input. Currently supported types: `string`, `number`, `any`, `list(...)`, `map(...)`.
+  We do not support `object` types as known by Terraform/OpenTofu, instead we will allow to define complex objects in a different way in a future version.
+  Type validation will be added to future versions.
+
+- `description` the description of the input.
+  It will be used as a comment in the generated bundle instance yaml when `terramate scafffold` is used.
+  This can be a multiline string when used with HERE document style syntax.
+
+- `default` a default value for the input.
+
+- `prompt` (Only used for scaffolding via `terramate scaffold`).
+   If present, this value will be included in the scaffolding form.
+   Currently only `string`, `number` and inputs with `allowed_values` are fully supported in `terramate scaffold`. `multiline` and `multiselect` are also supported.
+   For other types `scaffold` falls back to entering HCL syntax.
+
+   More and imporved type support is planned for upcoming releases.
+
+- `allowed_values` (Only used for scaffolding via `terramate scaffold`).
+  A list of objects defining `name` and `value` attributes.
+
+  - `name` will be presented to the user as an option.
+  - `valie` will be used as the corresponding value in the generated bundle instance (yaml).
+
+- `multiselect` (Only used for scaffolding via `terramate scaffold`) A boolean that allows to select multiple values for `list(any)` or `list(string)` type inputs.
+
+- `multiline` (Only used for scaffolding via `terramate scaffold`) A boolean that allows to input multiline strings for `string` type inputs.
 
 #### Bundle Scaffolding HCL Block
 
@@ -395,8 +424,8 @@ Example of bundle scaffolding configuration
 
 ```hcl
 define bundle scaffolding {
-	path = "/path/to/bundle_${tm_slug(bundle.input.name.value)}.tm.yml"
-	name = tm_slug(bundle.input.name.value)
+  path = "/path/to/bundle_${tm_slug(bundle.input.name.value)}.tm.yml"
+  name = tm_slug(bundle.input.name.value)
 }
 ```
 
@@ -413,21 +442,21 @@ The following code shows a Catalyst Bundle Stack instantiating one Catalyst Comp
 
 ```hcl
 define bundle stack "organization-members" {
-	metadata {
-		path = "organization/memberships"
+  metadata {
+    path = "organization/memberships"
 
-		name        = "GitHub Orgnaitzaion Member"
-		description = "GitHub organization members, owners, collaborators and blocked users"
+    name        = "GitHub Orgnaitzaion Member"
+    description = "GitHub organization members, owners, collaborators and blocked users"
 
-		tags = [
-			"example.com/github-organization",
-		]
-	}
+    tags = [
+      "example.com/github-organization",
+    ]
+  }
 
-	component "members" {
-		source = "/components/terramate.io/terramate-tf-github-organization-members/v1"
-		inputs = { for k in tm_keys(bundle.input) : k => bundle.input[k].value }
-	}
+  component "members" {
+    source = "/components/terramate.io/terramate-tf-github-organization-members/v1"
+    inputs = { for k in tm_keys(bundle.input) : k => bundle.input[k].value }
+  }
 }
 ```
 
@@ -450,13 +479,13 @@ Any [Component Instantiation](#component-instantiation-hcl-configuration-syntax)
 
 A Bundle can define exports. Those are meant to pass pre computed configuration to other bundles or code generation.
 
-They can be used to generate allowed_values for scaffolding purposes or to share pre calculated structures to share information about resources the bundle created.
+They can be used to generate `allowed_values` for scaffolding purposes or to share pre calculated structures to share information about resources the bundle created.
 
 The follwoing example defines a `team_tuple` that exports a tuple of two input variables: `parent` and `name`.
 
 ```hcl
 define bundle export "team_tuple" {
-	value = [bundle.input.parent.value, bundle.input.name.value]
+  value = [bundle.input.parent.value, bundle.input.name.value]
 }
 ```
 
@@ -478,8 +507,8 @@ The next sections define the HCL syntax on how to instantiate and define compone
 
 ```hcl
 component "members" {
-	source = "/components/terramate.io/terramate-tf-github-organization-members/v1"
-	inputs = { for k in tm_keys(bundle.input) : k => bundle.input[k].value }
+  source = "/components/terramate.io/terramate-tf-github-organization-members/v1"
+  inputs = { for k in tm_keys(bundle.input) : k => bundle.input[k].value }
 }
 ```
 
@@ -497,12 +526,12 @@ All definitions for a component will be merged, so it ins not required to define
 
 ```hcl
 define component {
-	metadata {
-		# ...
-	}
+  metadata {
+    # ...
+  }
 
-	input "name" {
-	}
+  input "name" {
+  }
 }
 ```
 
@@ -512,12 +541,12 @@ Example of component metdadata:
 
 ```hcl
 define component metadata {
-	class   = "example.com/my-component"
-	version = "1.0.0"
-	name    = "My Component"
-	description = <<-EOF
-		My first Terramate Component is doing amazing stuff
-	EOF
+  class   = "example.com/my-component"
+  version = "1.0.0"
+  name    = "My Component"
+  description = <<-EOF
+    My first Terramate Component is doing amazing stuff
+  EOF
 }
 ```
 
@@ -527,22 +556,16 @@ Example of component inputs:
 
 ```hcl
 define component {
-	input "name" {
-		type        = string
-		prompt      = "Name of the Service"
-		description = "Set a name for the serivce"
-	}
+  input "name" {
+    type        = string
+    description = "Set a name for the serivce"
+  }
 
-	input "visibility" {
-		type        = string
-		prompt      = "Visibility"
-		description = "Visibility of the Resource"
-		allowed_values = [
-			{ name = "A public resource", value = "public" },
-			{ name = "A private resource", value =  "private" },
-		]
-		default = "private"
-	}
+  input "visibility" {
+    type        = string
+    description = "Visibility of the Resource"
+    default     = "private"
+  }
 }
 ```
 
@@ -558,11 +581,59 @@ The value of the following input `name` can be accessed as `component.input.name
 
 ```hcl
 define component input "name" {
-	type        = string
-	prompt      = "Name of the Service"
-	description = "Set a name for the serivce"
+  type        = string
+  prompt      = "Name of the Service"
+  description = "Set a name for the serivce"
 }
 ```
+
+# Catalyst Functions
+
+## tm_bundles(class) and tm_bundle(class, alias)
+
+To access information of instantiated bundles we provide two functions:
+
+- `tm_bundles(class)` allows to access all instantiated bundles of a specific `class`.
+  This function returns a list of objects describing the bundle.
+  If no bundle of that class is found, the list will be empty.
+
+- `tm_bundle(class, alias)` allows to access a specific instantiated bundle of a specific `class` having a specific `alias`.
+  This functions returns a single object describing the bundle.
+  If the bundle is not found, the result will be `null`.
+
+The returned bundle objects have the following structure:
+```hcl
+{
+  class   = string
+  alias   = string
+  uuid    = string
+  inputs  = map(object)
+  exports = map(object)
+}
+```
+
+- `class` The bundle class as defined by the bundle definition.
+
+- `alias` The alias of the bundle instance as defined by the bundle author in the bundle definition.
+  This alias needs to be unique within an repository for a given class and is normally constructed from bundle inputs.
+
+- `uuid` The bundle instance UUID. This can be used to tag and query resources of the bundle from within Terraform/OpenTofu via code generation.
+
+  Example: `tm_bundle("example.com/my-bundle-class/v1", "main").uuid`
+
+- `inputs` A key value map of bundle inputs.
+  Each object have a key `value` to access the current value of the export.
+  This object will be extended in future versions.
+
+  Example: `tm_bundle("example.com/my-bundle-class/v1", "main").inputs.my_input.value`
+
+- `exports` A key value map of bundle export objects the specific bundle instance supports.
+  Each object have a key `value` to access the current value of the export.
+  This object will be extended in future versions.
+
+  Example: `tm_bundle("example.com/my-bundle-class/v1", "main").exports.my_export.value`
+
+Both functions can be used in Code Generation and in `allowed_values` for scaffolding.
 
 # Catalyst Variables in the `terramate` namespace
 
@@ -572,6 +643,9 @@ Note: the new variables are NOT YET available everywhere, but the availability w
 
 ## terramate.bundles
 
+> [!NOTE]
+> DEPRECATION NOTE: This variable has been replaced by `tm_bundles()` and `tm_bundle()` functions for easier access to the data also in places where the `terramate` namespace is not available.
+
 `terramate.bundles` is a map of maps keyed by `class` and `alias` of a bundle. to access inputs of a specific bundle the syntax is `terramate.bundles[{class}][{alias}].inputs`. The exports are available as `terramate.bundles[{class}][{alias}].exports`.
 
 A specific inputs value of a bundle of class `example.com/my-bundle/v1` having the `alias` of `my-alias` can be accessed by `terramate.bundles[example.com/my-bundle/v1][my-alias].inputs.name.value`.
@@ -580,18 +654,18 @@ Terramate functions and HCL constructs can be used to loop through the informati
 
 ```hcl
 allowed_values = tm_concat(
-	[{ name = "-- None --", value = null }],
+  [{ name = "-- None --", value = null }],
 
-	# create a list of Parent Teams from exported configuration values of the GitHub Team Bundle
-	[for parent in tm_try(
-		tm_joinlist("/",
-			tm_tree(tm_values(
-				terramate.bundles["terramate.io/tf-github-team"])[*].exports.team_tuple.value
-			)
-		),
-		[]) :
-		{ name = parent, value = tm_reverse(tm_split("/", parent))[0] }
-	]
+  # create a list of Parent Teams from exported configuration values of the GitHub Team Bundle
+  [for parent in tm_try(
+    tm_joinlist("/",
+      tm_tree(tm_values(
+        terramate.bundles["terramate.io/tf-github-team"])[*].exports.team_tuple.value
+      )
+    ),
+    []) :
+    { name = parent, value = tm_reverse(tm_split("/", parent))[0] }
+  ]
 )
 ```
 
