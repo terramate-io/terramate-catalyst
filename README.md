@@ -2,9 +2,6 @@
 
 Access our early [Documentation of Terramate Catalyst](CATALYST.md).
 
-> [!TIP]
-> Terramate Catalyst is currently only available for design partners. If you are interested in joining our design partner program, please [contact us].
-
 ## What is Terramate Catalyst?
 
 Terramate Catalyst is a special distribution of Terramate CLI supporting all the same base features but adding powerful additional capabilities to make itt scalable for any size of teams.
